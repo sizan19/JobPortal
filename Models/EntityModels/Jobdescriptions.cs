@@ -22,7 +22,19 @@ namespace JobPortal.Models.EntityModels
 
         public decimal? Salary { get; set; }
 
+        [Required]
+
+        public int CategoryId { get; set; }
+
+        [Required]
         public int VendorId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Categories Categories { get; set; }
+
+        [ForeignKey("VendorId")]
+
+        public VendorOrganizations VendorOrganizations { get; set; }
 
     }
 }
