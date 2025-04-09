@@ -122,7 +122,7 @@ namespace JobPortal.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-
+                    //we see adding breakpoint if the data goes to the database
                     await _userManager.AddToRoleAsync(user, "admin");
 
                     var userId = await _userManager.GetUserIdAsync(user);
