@@ -6,7 +6,9 @@ var connectionString = builder.Configuration.GetConnectionString("JobPortalConte
 
 builder.Services.AddDbContext<JobPortalContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<JobPortalContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<JobPortalContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
