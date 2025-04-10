@@ -117,7 +117,8 @@ namespace JobPortal.Areas.Identity.Pages.Account
 
                     //here we would be redirecting to the home page
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Dashboard");  
                 }
                 if (result.RequiresTwoFactor)
                 {
