@@ -2,7 +2,7 @@
 
 namespace JobPortal.Controllers
 {
-    public class DashboardController1 : Controller
+    public class DashboardController : Controller
     {
         public IActionResult Index()
         {
