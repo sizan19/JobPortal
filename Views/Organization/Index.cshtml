@@ -1,0 +1,66 @@
+﻿@model IEnumerable<JobPortal.Models.ViewModels.OrganizationVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrgName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrgAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrgContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrgEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrgImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrgImage)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
