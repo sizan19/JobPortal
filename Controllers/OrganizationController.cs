@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JobPortal.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {
@@ -18,7 +19,7 @@ namespace JobPortal.Controllers
 
         [HttpPost]
 
-        public IActionResult Create()
+        public IActionResult Create(OrganizationVM model)
         {
             return View();
         }
@@ -30,7 +31,7 @@ namespace JobPortal.Controllers
 
         [HttpPost]
 
-        public IActionResult Edit()
+        public IActionResult Edit(OrganizationVM model)
         {
             return View();
         }
@@ -42,7 +43,7 @@ namespace JobPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete()
+        public IActionResult Delete(OrganizationVM model)
         {
             return View();
         }
