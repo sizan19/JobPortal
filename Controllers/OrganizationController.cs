@@ -17,8 +17,19 @@ namespace JobPortal.Controllers
         public IActionResult Index()
         {
 
-
+            OrganizationVM model = new OrganizationVM();
+            model.OrganizationList = (from i in _db.Organization    //SElECT * FROM Organization
+                                      select new OrganizationVM
+                                      {
+                                          OrganizationId = i.OrganizationId,   //converting from Entitymdoel to viewmodel
+                                          OrgName = i.OrgName,
+                                          OrgAddress = i.OrgAddress,
+                                          OrgContact = i.OrgContact,
+                                          OrgEmail = i.OrgEmail,
+                                      }).ToList();
             return View();
+
+            
         }
 
         //If empty , it will be a GET request
