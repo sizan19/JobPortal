@@ -1,12 +1,23 @@
-﻿using JobPortal.Models.ViewModels;
+﻿using JobPortal.Data;
+using JobPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {
     public class OrganizationController : Controller
     {
+
+        private readonly JobPortalContext _db;
+
+        public OrganizationController(JobPortalContext db)
+        {
+            _db = db;
+        }
+
         public IActionResult Index()
         {
+
+
             return View();
         }
 
