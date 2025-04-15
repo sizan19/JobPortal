@@ -19,6 +19,13 @@
 
         public decimal? Salary { get; set; }
 
+        public List<JobdescriptionVM> JobdescriptionList { get; set; }
+
+        public JobdescriptionVM()
+        {
+            JobdescriptionList = new List<JobdescriptionVM>();
+        }
+
 
     }
 }
