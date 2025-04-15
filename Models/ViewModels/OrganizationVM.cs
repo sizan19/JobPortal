@@ -9,5 +9,13 @@
         public string? OrgEmail { get; set; }
 
         public string? OrgImage { get; set; }
+
+
+        public List<OrganizationVM> OrganizationList { get; set; }
+
+        public OrganizationVM()
+        {
+            OrganizationList = new List<OrganizationVM>();
+        }
     }
 }

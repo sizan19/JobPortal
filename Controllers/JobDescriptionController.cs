@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
 {
-    public class OrganizationController : Controller
+    public class JobDescriptionController : Controller
     {
         public IActionResult Index()
         {
@@ -19,7 +19,7 @@ namespace JobPortal.Controllers
 
         [HttpPost]
 
-        public IActionResult Create(OrganizationVM model)
+        public IActionResult Create(JobdescriptionVM model)
         {
             return View();
         }
@@ -31,7 +31,7 @@ namespace JobPortal.Controllers
 
         [HttpPost]
 
-        public IActionResult Edit(OrganizationVM model)
+        public IActionResult Edit(JobdescriptionVM model)
         {
             return View();
         }
@@ -43,7 +43,7 @@ namespace JobPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(OrganizationVM model)
+        public IActionResult Delete(JobdescriptionVM model)
         {
             return View();
         }
