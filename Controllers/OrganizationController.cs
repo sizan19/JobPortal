@@ -27,7 +27,7 @@ namespace JobPortal.Controllers
                                           OrgContact = i.OrgContact,
                                           OrgEmail = i.OrgEmail,
                                       }).ToList();
-            return View();
+            return View(model);
 
             
         }
