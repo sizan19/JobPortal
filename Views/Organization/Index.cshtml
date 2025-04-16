@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobPortal.Models.ViewModels.OrganizationVM>
+﻿@model JobPortal.Models.ViewModels.OrganizationVM
 
 @{
     ViewData["Title"] = "Index";
@@ -35,7 +35,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.OrganizationList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.OrganizationId)
