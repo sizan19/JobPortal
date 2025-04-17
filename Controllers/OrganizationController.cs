@@ -1,6 +1,8 @@
 ﻿using JobPortal.Data;
+using JobPortal.Models.EntityModels;
 using JobPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Controllers
 {
@@ -43,7 +45,14 @@ namespace JobPortal.Controllers
 
         public IActionResult Create(OrganizationVM model)
         {
-            return View();
+            Organization entityorg = new Organization();
+            entityorg.OrgName = model.OrgName;
+            entityorg.OrgAddress = model.OrgAddress;
+            entityorg.OrgContact = model.OrgContact;
+            entityorg.OrgEmail = model.OrgEmail;
+            _db.Entry(entityorg).State = EntityState.Added; //Add the entity to the database
+            _db.SaveChanges(); //Save the changes to the database
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
