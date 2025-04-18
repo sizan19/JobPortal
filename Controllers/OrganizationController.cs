@@ -88,8 +88,11 @@ namespace JobPortal.Controllers
             entityorg.OrgContact = model.OrgContact;
             entityorg.OrgEmail = model.OrgEmail;
             entityorg.UpdatedBy = "Admin"; //Set the created by field
-            entityorg.CreatedDate = DateTime.Now; //Set the created date field
+            entityorg.UpdatedDate = DateTime.Now; //Set the created date field
             _db.Entry(entityorg).State = EntityState.Modified; //Add the entity to the database
+            _db.Entry(entityorg).Property(x => x.CreatedBy).IsModified = false;  // so that these values were removed when updating database
+            _db.Entry(entityorg).Property(x => x.CreatedDate).IsModified = false;
+
             _db.SaveChanges(); //Save the changes to the database
             return RedirectToAction("Index");
         }
