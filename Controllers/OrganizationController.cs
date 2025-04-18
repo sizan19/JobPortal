@@ -50,6 +50,8 @@ namespace JobPortal.Controllers
             entityorg.OrgAddress = model.OrgAddress;
             entityorg.OrgContact = model.OrgContact;
             entityorg.OrgEmail = model.OrgEmail;
+            entityorg.CreatedBy = "Admin"; //Set the created by field
+            entityorg.CreatedDate = DateTime.Now; //Set the created date field
             _db.Entry(entityorg).State = EntityState.Added; //Add the entity to the database
             _db.SaveChanges(); //Save the changes to the database
             return RedirectToAction("Index");
@@ -57,14 +59,39 @@ namespace JobPortal.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View();
+            var data = _db.Organization.FirstOrDefault(x => x.OrganizationId == id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            OrganizationVM model = new OrganizationVM
+            {
+                OrganizationId = data.OrganizationId,
+                OrgName = data.OrgName,
+                OrgAddress = data.OrgAddress,
+                OrgContact = data.OrgContact,
+                OrgEmail = data.OrgEmail
+            };
+
+            return View(model);
         }
 
         [HttpPost]
 
         public IActionResult Edit(OrganizationVM model)
         {
-            return View();
+            Organization entityorg = new Organization();
+            entityorg.OrganizationId = model.OrganizationId;
+            entityorg.OrgName = model.OrgName;
+            entityorg.OrgAddress = model.OrgAddress;
+            entityorg.OrgContact = model.OrgContact;
+            entityorg.OrgEmail = model.OrgEmail;
+            entityorg.UpdatedBy = "Admin"; //Set the created by field
+            entityorg.CreatedDate = DateTime.Now; //Set the created date field
+            _db.Entry(entityorg).State = EntityState.Modified; //Add the entity to the database
+            _db.SaveChanges(); //Save the changes to the database
+            return RedirectToAction("Index");
         }
 
 
