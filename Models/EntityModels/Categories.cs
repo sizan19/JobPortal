@@ -2,7 +2,7 @@
 
 namespace JobPortal.Models.EntityModels
 {
-    public class Categories
+    public class Categories:Common
     {
         [Key]
         public int CategoryId { get; set; }

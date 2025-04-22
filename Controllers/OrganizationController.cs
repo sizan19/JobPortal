@@ -164,10 +164,10 @@ namespace JobPortal.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Delete(OrganizationVM model)
-        {
-            return View();
-        }
+        //[HttpPost]
+        //public IActionResult Delete(OrganizationVM model)  --there is no need of view
+        //{
+        //    return View();
+        //}
     }
 }
