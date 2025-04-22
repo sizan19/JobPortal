@@ -26,7 +26,8 @@ namespace JobPortal.Controllers
 
             OrganizationVM model = new OrganizationVM();
             model.OrganizationList = (from i in _db.Organization    //SElECT * FROM Organization
-                                      select new OrganizationVM
+                                      where i.DeltetedDate == null
+                                      select new OrganizationVM 
                                       {
                                           OrganizationId = i.OrganizationId,   //converting from Entitymdoel to viewmodel
                                           OrgName = i.OrgName,
@@ -142,9 +143,25 @@ namespace JobPortal.Controllers
         }
 
 
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
+            var data = _db.Organization.FirstOrDefault(x => x.OrganizationId == id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (data != null)
+            {
+                data.DeltetedBy = UserId; //Set the IsDeleted property to true
+                data.DeltetedDate = DateTime.Now;
+                _db.Entry(data).State = EntityState.Modified; //Add the entity to the database
+                _db.SaveChanges(); //Save the changes to the database
+            }
+
+
+            return RedirectToAction("Index");
+
         }
 
         [HttpPost]
