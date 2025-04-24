@@ -1,0 +1,51 @@
+﻿@model JobPortal.Models.ViewModels.VendororganizationVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>VendororganizationVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="VendorId" class="form-control" hidden="hidden" />
+            <div class="form-group">
+                <label asp-for="VendorName" class="control-label"></label>
+                <input asp-for="VendorName" class="form-control" />
+                <span asp-validation-for="VendorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VendorAddress" class="control-label"></label>
+                <input asp-for="VendorAddress" class="form-control" />
+                <span asp-validation-for="VendorAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VendorContact" class="control-label"></label>
+                <input asp-for="VendorContact" class="form-control" />
+                <span asp-validation-for="VendorContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VendorEmail" class="control-label"></label>
+                <input asp-for="VendorEmail" class="form-control" />
+                <span asp-validation-for="VendorEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

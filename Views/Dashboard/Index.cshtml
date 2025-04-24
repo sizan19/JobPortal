@@ -1,7 +1,41 @@
-﻿@{
-    Layout = "_DashboardLayout";
+﻿@{  
+   Layout = "_DashboardLayout";  
+}  
+
+<style>  
+   body {  
+       background-color: #ffe4e1 !important; 
+   }  
+
+   .frosted-glass {  
+       background: rgba(255, 192, 203, 0.3);  
+       backdrop-filter: blur(10px);  
+       border-radius: 10px;  
+       padding: 20px;  
+       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+       position: relative;  
+       z-index: 1;  
+   }  
+</style>  
+
+<h1 class=""> Welcome to Sijan's Website</h1>  
+
+<div class="frosted-glass mt-4 flex-row">  
+  <button type="button" class="btn btn-danger" onclick="fireworkClick()">Magic</button>  
+  <button type="button" class="btn btn-primary" onclick="fireworkClick()">Firework</button>  
+  <button type="button" class="btn btn-success" onclick="fireworkClick()">Click Me</button>  
+</div>
+
+@section Scripts {  
+   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>  
+
+   <script>  
+       function fireworkClick() {  
+           confetti({  
+               particleCount: 100,  
+               spread: 70,  
+               origin: { y: 0.6 }  
+           });  
+       }  
+   </script>  
 }
-
-
-
-<h1>Welcome to sijan's website'</h1>

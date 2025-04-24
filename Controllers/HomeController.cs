@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using JobPortal.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,11 @@ namespace JobPortal.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userName = User.FindFirstValue(ClaimTypes.Name);
+                ViewBag.UserName = userName; // Pass username to ViewBag
+            }
             return View();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace JobPortal.Models.ViewModels
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace JobPortal.Models.ViewModels
 {
     public class VendororganizationVM
     {
@@ -7,6 +9,8 @@
         public string? VendorAddress { get; set; }
         public string? VendorContact { get; set; }
         public string? VendorEmail { get; set; }
+
+
 
         public List<VendororganizationVM> VendororganizationList { get; set; }
 
