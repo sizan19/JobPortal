@@ -45,6 +45,7 @@ namespace JobPortal.Controllers
 
         public IActionResult Create()
         {
+
             return View();
         }
 
