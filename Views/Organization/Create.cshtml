@@ -5,51 +5,64 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h1>Create</h1>
 
-<h4>OrganizationVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrgName" class="control-label"></label>
-                <input asp-for="OrgName" class="form-control" />
-                <span asp-validation-for="OrgName" class="text-danger"></span>
+<div class="container">
+    <div class="row">
+        <div class="m-2 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Organization</h3></div>
+                <div class="card-body">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="OrgName" class="form-control" placeholder="Organization Name" />
+                            <label asp-for="OrgName"></label>
+                            <span asp-validation-for="OrgName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="OrgAddress" class="form-control" placeholder="Organization Address" />
+                            <label asp-for="OrgAddress"></label>
+                            <span asp-validation-for="OrgAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="OrgContact" class="form-control" placeholder="Contact Number" />
+                            <label asp-for="OrgContact"></label>
+                            <span asp-validation-for="OrgContact" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="OrgEmail" class="form-control" placeholder="Email Address" />
+                            <label asp-for="OrgEmail"></label>
+                            <span asp-validation-for="OrgEmail" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="OrgImage" class="form-label"></label>
+                            <input type="file" name="file" class="form-control" />
+                            <span asp-validation-for="OrgImage" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <input type="submit" value="Create" class="btn btn-primary btn-block" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small"><a href="login.html">Have an account? Go to login</a></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="OrgAddress" class="control-label"></label>
-                <input asp-for="OrgAddress" class="form-control" />
-                <span asp-validation-for="OrgAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrgContact" class="control-label"></label>
-                <input asp-for="OrgContact" class="form-control" />
-                <span asp-validation-for="OrgContact" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrgEmail" class="control-label"></label>
-                <input asp-for="OrgEmail" class="form-control" />
-                <span asp-validation-for="OrgEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrgImage" class="control-label"></label>
-@*                 <input asp-for="OrgImage" class="form-control" />
- *@                <input type="file" name="file"/>
-                <span asp-validation-for="OrgImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+
+
+
+
