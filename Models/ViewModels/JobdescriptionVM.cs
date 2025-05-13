@@ -17,9 +17,11 @@
 
         public string? JobPositions { get; set; }
 
-        public decimal? Salary { get; set; }
+        public decimal? MinSalary { get; set; }
+        public decimal? MaxSalary { get; set; }
 
-        public List<JobdescriptionVM> JobdescriptionList { get; set; }
+
+        public List<JobdescriptionVM> JobdescriptionList{ get; set; }
 
         public JobdescriptionVM()
         {

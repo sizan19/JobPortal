@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobPortal.Models.ViewModels.JobdescriptionVM>
+﻿@model JobPortal.Models.ViewModels.JobdescriptionVM
 
 @{
     ViewData["Title"] = "Index";
@@ -13,9 +13,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.JobId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -35,17 +32,18 @@
                 @Html.DisplayNameFor(model => model.JobPositions)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Salary)
+                @Html.DisplayNameFor(model => model.MinSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxSalary)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model.JobdescriptionList)
+        {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -65,12 +63,15 @@
                 @Html.DisplayFor(modelItem => item.JobPositions)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Salary)
+                @Html.DisplayFor(modelItem => item.MinSalary)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxSalary)
+                </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.JobId }) |
+                    @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobId })
             </td>
         </tr>
 }

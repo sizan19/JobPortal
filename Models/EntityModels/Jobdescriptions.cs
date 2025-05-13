@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobPortal.Models.EntityModels
 {
-    public class Jobdescriptions
+    public class Jobdescriptions : Common
     {
         [Key]
         public int JobId { get; set; }
@@ -20,7 +20,9 @@ namespace JobPortal.Models.EntityModels
 
         public string? JobPositions { get; set; }
 
-        public decimal? Salary { get; set; }
+        public decimal? MinSalary { get; set; }
+        public decimal? MaxSalary { get; set; }
+
 
         [Required]
 
