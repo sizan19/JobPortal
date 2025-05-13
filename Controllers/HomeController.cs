@@ -20,19 +20,19 @@ namespace JobPortal.Controllers
 
         public IActionResult Index()
         {
-            OrganizationVM model = new OrganizationVM();
-            model.OrganizationList = (from i in _db.Organization    //SElECT * FROM Organization
-                                      where i.DeltetedDate == null
-                                      select new OrganizationVM
-                                      {
-                                          OrganizationId = i.OrganizationId,   //converting from Entitymdoel to viewmodel
-                                          OrgName = i.OrgName,
-                                          OrgAddress = i.OrgAddress,
-                                          OrgContact = i.OrgContact,
-                                          OrgEmail = i.OrgEmail,
-                                          OrgImage = i.OrgImage,
-                                      }).ToList();
-            return View(model);
+            //OrganizationVM model = new OrganizationVM();
+            //model.OrganizationList = (from i in _db.Organization    //SElECT * FROM Organization
+            //                          where i.DeltetedDate == null
+            //                          select new OrganizationVM
+            //                          {
+            //                              OrganizationId = i.OrganizationId,   //converting from Entitymdoel to viewmodel
+            //                              OrgName = i.OrgName,
+            //                              OrgAddress = i.OrgAddress,
+            //                              OrgContact = i.OrgContact,
+            //                              OrgEmail = i.OrgEmail,
+            //                              OrgImage = i.OrgImage,
+            //                          }).ToList();
+            return View();
         }
 
         public IActionResult Privacy()
