@@ -10,6 +10,7 @@ namespace JobPortal.Models.ViewModels
         public string? VendorContact { get; set; }
         public string? VendorEmail { get; set; }
 
+        public string? VendorImage { get; set; }
 
 
         public List<VendororganizationVM> VendororganizationList { get; set; }

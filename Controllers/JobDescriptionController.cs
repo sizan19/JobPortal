@@ -2,7 +2,6 @@
 using JobPortal.Models.EntityModels;
 using JobPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace JobPortal.Controllers
@@ -13,18 +12,22 @@ namespace JobPortal.Controllers
 
     {
         private readonly JobPortalContext _db;
+        private readonly IServiceProvider _serviceProvider;
 
-        public JobDescriptionController(JobPortalContext db)
+
+        public JobDescriptionController(JobPortalContext db, IServiceProvider serviceProvider)
         {
             _db = db;
+            _serviceProvider = serviceProvider;
         }
 
         public IActionResult Index()
         {
-            var model = new JobdescriptionVM();
-
+            JobdescriptionVM model = new JobdescriptionVM();
             model.JobdescriptionList = (from i in _db.jobdescriptions
-                                        where i != null // Adjust condition as needed
+                                        join j in _db.Categories on i.CategoryId equals j.CategoryId
+                                        join k in _db.VendorOrganizations on i.VendorId equals k.VendorId
+                                        where i.DeltetedDate == null
                                         select new JobdescriptionVM
                                         {
                                             JobId = i.JobId,
@@ -34,9 +37,22 @@ namespace JobPortal.Controllers
                                             Location = i.Location,
                                             JobType = i.JobType,
                                             JobPositions = i.JobPositions,
+                                            JobVacancy = i.JobVacancy,
                                             MinSalary = i.MinSalary,
-                                            MaxSalary = i.MaxSalary
+                                            MaxSalary = i.MaxSalary,
+                                            CategoryId = i.CategoryId,
+                                            VendorId = i.VendorId,
                                         }).ToList();
+            
+
+            if (User.IsInRole("Vendor"))
+            {
+                int vendorId = _db.VendorOrganizations
+                .Where(x => x.VendorEmail == User.FindFirstValue(ClaimTypes.Email))
+                .Select(x => x.VendorId)
+                .FirstOrDefault();
+                model.JobdescriptionList = model.JobdescriptionList.Where(x => x.VendorId == vendorId).ToList();
+            }
 
             return View(model);
         }
@@ -47,6 +63,7 @@ namespace JobPortal.Controllers
         {
 
             return View();
+
         }
 
         [HttpPost]

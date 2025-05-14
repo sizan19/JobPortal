@@ -20,6 +20,9 @@ namespace JobPortal.Models.EntityModels
 
         public string? JobPositions { get; set; }
 
+        public int JobVacancy { get; set; }
+
+
         public decimal? MinSalary { get; set; }
         public decimal? MaxSalary { get; set; }
 

@@ -11,6 +11,8 @@ namespace JobPortal.Models.EntityModels
         public string? VendorAddress { get; set; }
         public string? VendorContact { get; set; }
         public string? VendorEmail { get; set; }
+        public string? VendorImage { get; set; }
+
 
         //[Required]
 

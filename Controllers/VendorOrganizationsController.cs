@@ -20,14 +20,15 @@ namespace JobPortal.Controllers
         {
             VendororganizationVM model = new VendororganizationVM();
             model.VendororganizationList = (from i in _db.VendorOrganizations    //SElECT * FROM Vendor organization
-                                    select new VendororganizationVM
-                                    
+                                            where i.DeltetedDate == null
+                                            select new VendororganizationVM
                                     {
                                         VendorId = i.VendorId,   //converting from Entitymdoel to viewmodel
                                         VendorName = i.VendorName,
                                         VendorAddress = i.VendorAddress,
                                         VendorContact = i.VendorContact,
                                         VendorEmail = i.VendorEmail,
+                                        VendorImage = i.VendorImage,
                                     }).ToList();
             return View(model);
         }
@@ -41,8 +42,20 @@ namespace JobPortal.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(VendororganizationVM model)
+        public IActionResult Create(VendororganizationVM model, IFormFile? file)
         {
+            if (file != null)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, file.FileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                model.VendorImage = $"/Files/{file.FileName}";
+            }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -52,6 +65,7 @@ namespace JobPortal.Controllers
                 VendorAddress = model.VendorAddress,
                 VendorContact = model.VendorContact,
                 VendorEmail = model.VendorEmail,
+                VendorImage = model.VendorImage,
                 CreatedBy = userId,
                 CreatedDate = DateTime.Now
             };
@@ -78,7 +92,8 @@ namespace JobPortal.Controllers
                 VendorName = data.VendorName,
                 VendorAddress = data.VendorAddress,
                 VendorContact = data.VendorContact,
-                VendorEmail = data.VendorEmail
+                VendorEmail = data.VendorEmail,
+                VendorImage = data.VendorImage
             };
 
             return View(model);
@@ -97,6 +112,7 @@ namespace JobPortal.Controllers
             entitycat.VendorAddress = model.VendorAddress;
             entitycat.VendorContact = model.VendorContact;
             entitycat.VendorEmail = model.VendorEmail;
+            entitycat.VendorImage = model.VendorImage;
 
             entitycat.UpdatedBy = UserId; //Set the created by field
             entitycat.UpdatedDate = DateTime.Now; //Set the created date field
