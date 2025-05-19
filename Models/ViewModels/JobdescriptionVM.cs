@@ -5,8 +5,6 @@
 
         public int JobId { get; set; }
 
-        public string? Title { get; set; }
-
         public string? Description { get; set; }
 
         public string? CompanyName { get; set; }
@@ -22,6 +20,10 @@
 
         public decimal? MinSalary { get; set; }
         public decimal? MaxSalary { get; set; }
+
+        public int? Experience { get; set; }
+
+        public DateTime? DeadlineDate { get; set; }
 
         public int CategoryId { get; set; }
         public int VendorId { get; set; }

@@ -40,6 +40,8 @@ namespace JobPortal.Controllers
                                             Location = i.Location,
                                             MinSalary = i.MinSalary,
                                             MaxSalary = i.MaxSalary,
+                                            Experience = i.Experience,
+                                            DeadlineDate = i.DeadlineDate,
                                             Description = i.Description,
                                             VendorName = k.VendorName,
                                             CategoryName = j.CategoryName,
@@ -81,6 +83,8 @@ namespace JobPortal.Controllers
             entityJobDescription.Location = model.Location;
             entityJobDescription.MinSalary = model.MinSalary;
             entityJobDescription.MaxSalary = model.MaxSalary;
+            entityJobDescription.Experience = model.Experience;
+            entityJobDescription.DeadlineDate = model.DeadlineDate;
             entityJobDescription.Description = model.Description;
             entityJobDescription.CreatedBy = userId;
             entityJobDescription.CreatedDate = DateTime.Now;
@@ -107,6 +111,8 @@ namespace JobPortal.Controllers
                 model.Location = org.Location;
                 model.MinSalary = org.MinSalary;
                 model.MaxSalary = org.MaxSalary;
+                model.Experience = org.Experience;
+                model.DeadlineDate = org.DeadlineDate;
                 model.Description = org.Description;
             }
             ViewBag.VendorOrganizations = Utilities.CommonUtilities.GetVendorOrganizationList(_serviceProvider);
@@ -119,7 +125,7 @@ namespace JobPortal.Controllers
         public IActionResult Edit(JobdescriptionVM model)
         {
             ViewBag.VendorOrgaization = Utilities.CommonUtilities.GetVendorOrganizationList(_serviceProvider);
-            ViewBag.Category = Utilities.CommonUtilities.GetCategoryList(_serviceProvider);
+            ViewBag.Categories = Utilities.CommonUtilities.GetCategoryList(_serviceProvider);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Jobdescriptions entityJobDescription = new Jobdescriptions();
             entityJobDescription.JobId = model.JobId;
@@ -131,6 +137,8 @@ namespace JobPortal.Controllers
             entityJobDescription.Location = model.Location;
             entityJobDescription.MinSalary = model.MinSalary;
             entityJobDescription.MaxSalary = model.MaxSalary;
+            entityJobDescription.Experience = model.Experience;
+            entityJobDescription.DeadlineDate = model.DeadlineDate;
             entityJobDescription.Description = model.Description;
             entityJobDescription.UpdatedBy = userId;
             entityJobDescription.UpdatedDate = DateTime.Now;

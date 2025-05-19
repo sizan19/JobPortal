@@ -8,7 +8,6 @@ namespace JobPortal.Models.EntityModels
         [Key]
         public int JobId { get; set; }
 
-        public string? Title { get; set; }
 
         public string? Description { get; set; }
 
@@ -25,6 +24,15 @@ namespace JobPortal.Models.EntityModels
 
         public decimal? MinSalary { get; set; }
         public decimal? MaxSalary { get; set; }
+
+        public int? Experience { get; set; }
+
+        public DateTime? DeadlineDate { get; set; }
+
+
+
+
+
 
 
         [Required]

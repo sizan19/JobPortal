@@ -1,91 +1,59 @@
 ﻿@model JobPortal.Models.ViewModels.JobdescriptionVM
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Job Listings";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobVacancy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobPositions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinSalary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxSalary)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.JobdescriptionList)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobVacancy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobPositions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinSalary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxSalary)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.JobId }) |
-                    @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
-                    @Html.ActionLink("Delete", "Delete", new { id = item.JobId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container py-4">
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Job Descriptions</h4>
+            <a asp-action="Create" class="btn btn-light btn-sm">+ Create New</a>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.VendorName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Location)</th>
+                        <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobVacancy)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobType)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobPositions)</th>
+                        <th>@Html.DisplayNameFor(model => model.MinSalary)</th>
+                        <th>@Html.DisplayNameFor(model => model.MaxSalary)</th>
+                        <th>@Html.DisplayNameFor(model => model.Experience)</th>
+                        <th>@Html.DisplayNameFor(model => model.DeadlineDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.JobdescriptionList)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Location)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JobVacancy)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JobType)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JobPositions)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MinSalary)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MaxSalary)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Experience)</td>
+                            <td>@(item.DeadlineDate.HasValue ? item.DeadlineDate.Value.ToString("yyyy-MM-dd") : "")</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.JobId" class="btn btn-outline-primary">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.JobId" class="btn btn-outline-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
