@@ -45,6 +45,13 @@
                 <span asp-validation-for="JobPositions" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category">
+                    <option value="">-- Select Organization --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="MinSalary" class="control-label"></label>
                 <input asp-for="MinSalary" class="form-control" />
                 <span asp-validation-for="MinSalary" class="text-danger"></span>

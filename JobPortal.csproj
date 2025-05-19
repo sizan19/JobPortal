@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utilities\" />
     <Folder Include="wwwroot\DashboardContent\" />
     <Folder Include="wwwroot\HomeContent\" />
   </ItemGroup>

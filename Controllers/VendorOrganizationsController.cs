@@ -1,6 +1,7 @@
 ﻿using JobPortal.Data;
 using JobPortal.Models.EntityModels;
 using JobPortal.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,13 @@ namespace JobPortal.Controllers
     public class VendorOrganizationsController : Controller
     {
         private readonly JobPortalContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public VendorOrganizationsController(JobPortalContext db)
+
+        public VendorOrganizationsController(JobPortalContext db, UserManager<IdentityUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -44,37 +48,74 @@ namespace JobPortal.Controllers
         [HttpPost]
         public IActionResult Create(VendororganizationVM model, IFormFile? file)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             if (file != null)
             {
+                var guidId = Guid.NewGuid().ToString();
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                string fileNameWithPath = Path.Combine(path, file.FileName);
+                string fileName = guidId + file.FileName;
+                string fileNameWithPath = Path.Combine(path, fileName);
                 using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
-                model.VendorImage = $"/Files/{file.FileName}";
+                model.VendorImage = "/Files/" + fileName;
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var entityVendorOrg = new VendorOrganizations
+            using (var transaction = _db.Database.BeginTransaction())
             {
-                VendorName = model.VendorName,
-                VendorAddress = model.VendorAddress,
-                VendorContact = model.VendorContact,
-                VendorEmail = model.VendorEmail,
-                VendorImage = model.VendorImage,
-                CreatedBy = userId,
-                CreatedDate = DateTime.Now
-            };
+                try
+                {
+                    var entityVendorOrg = new VendorOrganizations
+                    {
+                        VendorName = model.VendorName,
+                        VendorAddress = model.VendorAddress,
+                        VendorContact = model.VendorContact,
+                        VendorEmail = model.VendorEmail,
+                        VendorImage = model.VendorImage,
+                        CreatedBy = userId,
+                        CreatedDate = DateTime.Now
+                    };
 
-            _db.Entry(entityVendorOrg).State = EntityState.Added;
-            _db.SaveChanges();
+                    _db.Entry(entityVendorOrg).State = EntityState.Added;
+                    _db.SaveChanges();
 
-            return RedirectToAction("Index");
+                    IdentityUser user = new IdentityUser
+                    {
+                        UserName = model.VendorEmail,
+                        Email = model.VendorEmail,
+                        EmailConfirmed = true
+                    };
 
+                    var result = _userManager.CreateAsync(user, $"Job@12{model.VendorEmail}").Result;
+                    if (result.Succeeded)
+                    {
+                        _userManager.AddToRoleAsync(user, "Vendor").Wait();
+                        transaction.Commit();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                        ModelState.AddModelError(string.Empty, "Failed to create user.");
+                    }
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    ModelState.AddModelError(string.Empty, "An error occurred while creating the organization.");
+                }
+            }
+
+            return View(model);
         }
 
 
@@ -102,8 +143,20 @@ namespace JobPortal.Controllers
 
         [HttpPost]
 
-        public IActionResult Edit(VendororganizationVM model)
+        public IActionResult Edit(VendororganizationVM model, IFormFile? file)
         {
+            if (file != null)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, file.FileName);
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                model.VendorImage = $"/Files/{file.FileName}";
+            }
             var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             VendorOrganizations entitycat = new VendorOrganizations();

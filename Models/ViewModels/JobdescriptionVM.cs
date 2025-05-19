@@ -24,8 +24,10 @@
         public decimal? MaxSalary { get; set; }
 
         public int CategoryId { get; set; }
-
         public int VendorId { get; set; }
+
+        public string? VendorName { get; set; }
+        public string? CategoryName { get; set; }
 
 
         public List<JobdescriptionVM> JobdescriptionList{ get; set; }

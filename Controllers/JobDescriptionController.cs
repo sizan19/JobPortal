@@ -2,6 +2,7 @@
 using JobPortal.Models.EntityModels;
 using JobPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace JobPortal.Controllers
@@ -31,19 +32,18 @@ namespace JobPortal.Controllers
                                         select new JobdescriptionVM
                                         {
                                             JobId = i.JobId,
-                                            Title = i.Title,
-                                            Description = i.Description,
-                                            CompanyName = i.CompanyName,
-                                            Location = i.Location,
-                                            JobType = i.JobType,
+                                            VendorId = i.VendorId,
+                                            CategoryId = i.CategoryId,
                                             JobPositions = i.JobPositions,
                                             JobVacancy = i.JobVacancy,
+                                            JobType = i.JobType,
+                                            Location = i.Location,
                                             MinSalary = i.MinSalary,
                                             MaxSalary = i.MaxSalary,
-                                            CategoryId = i.CategoryId,
-                                            VendorId = i.VendorId,
+                                            Description = i.Description,
+                                            VendorName = k.VendorName,
+                                            CategoryName = j.CategoryName,
                                         }).ToList();
-            
 
             if (User.IsInRole("Vendor"))
             {
@@ -61,64 +61,106 @@ namespace JobPortal.Controllers
 
         public IActionResult Create()
         {
-
+            ViewBag.VendorOrganizations = Utilities.CommonUtilities.GetVendorOrganizationList(_serviceProvider);
+            ViewBag.Categories = Utilities.CommonUtilities.GetCategoryList(_serviceProvider);
             return View();
-
         }
 
         [HttpPost]
 
 
-        public IActionResult Create(JobdescriptionVM model, IFormFile? file)
+        public IActionResult Create(JobdescriptionVM model)
         {
-            if (ModelState.IsValid)
-            {
-                var job = new Jobdescriptions
-                {
-                    Title = model.Title,
-                    Description = model.Description,
-                    CompanyName = model.CompanyName,
-                    Location = model.Location,
-                    JobType = model.JobType,
-                    JobPositions = model.JobPositions,
-                    MinSalary = model.MinSalary,
-                    MaxSalary = model.MaxSalary,
-                    // Optional if image path is relevant
-                    // OrgImage = model.OrgImage
-                };
-
-                _db.jobdescriptions.Add(job);
-                _db.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Jobdescriptions entityJobDescription = new Jobdescriptions();
+            entityJobDescription.VendorId = model.VendorId;
+            entityJobDescription.CategoryId = model.CategoryId;
+            entityJobDescription.JobPositions = model.JobPositions;
+            entityJobDescription.JobVacancy = model.JobVacancy;
+            entityJobDescription.JobType = model.JobType;
+            entityJobDescription.Location = model.Location;
+            entityJobDescription.MinSalary = model.MinSalary;
+            entityJobDescription.MaxSalary = model.MaxSalary;
+            entityJobDescription.Description = model.Description;
+            entityJobDescription.CreatedBy = userId;
+            entityJobDescription.CreatedDate = DateTime.Now;
+            _db.Entry(entityJobDescription).State = EntityState.Added;
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 
         public IActionResult Edit(int id)
         {
-            return View();
+            JobdescriptionVM model = new JobdescriptionVM();
+            var org = _db.jobdescriptions
+                .Where(x => x.JobId == id)
+                .FirstOrDefault();
+            if (org != null)
+            {
+                model.JobId = org.JobId;
+                model.VendorId = org.VendorId;
+                model.CategoryId = org.CategoryId;
+                model.JobPositions = org.JobPositions;
+                model.JobVacancy = org.JobVacancy;
+                model.JobType = org.JobType;
+                model.Location = org.Location;
+                model.MinSalary = org.MinSalary;
+                model.MaxSalary = org.MaxSalary;
+                model.Description = org.Description;
+            }
+            ViewBag.VendorOrganizations = Utilities.CommonUtilities.GetVendorOrganizationList(_serviceProvider);
+            ViewBag.Categories = Utilities.CommonUtilities.GetCategoryList(_serviceProvider);
+            return View(model);
         }
 
         [HttpPost]
 
         public IActionResult Edit(JobdescriptionVM model)
         {
-            return View();
+            ViewBag.VendorOrgaization = Utilities.CommonUtilities.GetVendorOrganizationList(_serviceProvider);
+            ViewBag.Category = Utilities.CommonUtilities.GetCategoryList(_serviceProvider);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Jobdescriptions entityJobDescription = new Jobdescriptions();
+            entityJobDescription.JobId = model.JobId;
+            entityJobDescription.VendorId = model.VendorId;
+            entityJobDescription.CategoryId = model.CategoryId;
+            entityJobDescription.JobPositions = model.JobPositions;
+            entityJobDescription.JobVacancy = model.JobVacancy;
+            entityJobDescription.JobType = model.JobType;
+            entityJobDescription.Location = model.Location;
+            entityJobDescription.MinSalary = model.MinSalary;
+            entityJobDescription.MaxSalary = model.MaxSalary;
+            entityJobDescription.Description = model.Description;
+            entityJobDescription.UpdatedBy = userId;
+            entityJobDescription.UpdatedDate = DateTime.Now;
+            _db.Entry(entityJobDescription).State = EntityState.Modified;
+            _db.Entry(entityJobDescription)
+                .Property(x => x.CreatedBy)
+                .IsModified = false;
+            _db.Entry(entityJobDescription)
+                .Property(x => x.CreatedDate)
+                .IsModified = false;
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
-        }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var data = _db.jobdescriptions
+                .Where(x => x.JobId == id)
+                .FirstOrDefault();
+            if (data != null)
+            {
+                data.DeltetedBy = userId;
+                data.DeltetedDate = DateTime.Now;
+                _db.Entry(data).State = EntityState.Modified;
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index");
 
-        [HttpPost]
-        public IActionResult Delete(JobdescriptionVM model)
-        {
-            return View();
         }
     }
 }
