@@ -1,45 +1,66 @@
 ﻿@model JobPortal.Models.ViewModels.CategoriesVM
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     int i = 1;
-
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                SN
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.CategoriesList)
-        {
-            <tr>
-                <td>
-                    @i
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CategoryId })
-                </td>
-            </tr>
-            i++;
-        }
-    </tbody>
-</table>
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Categories</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active">Category Table</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            This table displays all job categories available in the portal.
+            <br />
+            <a asp-action="Create" class="btn btn-secondary mt-3">+ Create New Category</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-tags me-1"></i>
+            Category List
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>@Html.DisplayNameFor(model => model.CategoriesList.FirstOrDefault().CategoryName)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CategoriesList != null && Model.CategoriesList.Any())
+                    {
+                        foreach (var item in Model.CategoriesList)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.CategoryName</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-warning me-1">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No categories found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -5,51 +5,73 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<div class="container py-4">
-    <div class="card shadow-sm rounded-3">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Job Descriptions</h4>
-            <a asp-action="Create" class="btn btn-light btn-sm">+ Create New</a>
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Job Descriptions</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active">Job Listings</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            All posted job listings with their details.
+            <br />
+            <a asp-action="Create" class="btn btn-secondary mt-3">+ Create New Job</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-briefcase me-1"></i>
+            Job Descriptions Table
         </div>
         <div class="card-body table-responsive">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-light">
+            <table id="datatablesSimple" class="table table-bordered table-hover align-middle">
+                <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.VendorName)</th>
-                        <th>@Html.DisplayNameFor(model => model.Location)</th>
-                        <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
-                        <th>@Html.DisplayNameFor(model => model.JobVacancy)</th>
-                        <th>@Html.DisplayNameFor(model => model.JobType)</th>
-                        <th>@Html.DisplayNameFor(model => model.JobPositions)</th>
-                        <th>@Html.DisplayNameFor(model => model.MinSalary)</th>
-                        <th>@Html.DisplayNameFor(model => model.MaxSalary)</th>
-                        <th>@Html.DisplayNameFor(model => model.Experience)</th>
-                        <th>@Html.DisplayNameFor(model => model.DeadlineDate)</th>
-                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().CompanyName)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().Location)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().CategoryName)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().JobVacancy)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().JobType)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().JobPositions)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().MinSalary)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().MaxSalary)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().Experience)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().DeadlineDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.JobdescriptionList.FirstOrDefault().Description)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.JobdescriptionList)
+                    @if (Model.JobdescriptionList != null && Model.JobdescriptionList.Any())
+                    {
+                        foreach (var item in Model.JobdescriptionList)
+                        {
+                            <tr>
+                                <td>@item.CompanyName</td>
+                                <td>@item.Location</td>
+                                <td>@item.CategoryName</td>
+                                <td>@item.JobVacancy</td>
+                                <td>@item.JobType</td>
+                                <td>@item.JobPositions</td>
+                                <td>@item.MinSalary</td>
+                                <td>@item.MaxSalary</td>
+                                <td>@item.Experience</td>
+                                <td>@(item.DeadlineDate.HasValue ? item.DeadlineDate.Value.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@item.Description</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.JobId" class="btn btn-sm btn-warning me-1">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.JobId" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Location)</td>
-                            <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.JobVacancy)</td>
-                            <td>@Html.DisplayFor(modelItem => item.JobType)</td>
-                            <td>@Html.DisplayFor(modelItem => item.JobPositions)</td>
-                            <td>@Html.DisplayFor(modelItem => item.MinSalary)</td>
-                            <td>@Html.DisplayFor(modelItem => item.MaxSalary)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Experience)</td>
-                            <td>@(item.DeadlineDate.HasValue ? item.DeadlineDate.Value.ToString("yyyy-MM-dd") : "")</td>
-                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                            <td>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a asp-action="Edit" asp-route-id="@item.JobId" class="btn btn-outline-primary">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@item.JobId" class="btn btn-outline-danger">Delete</a>
-                                </div>
-                            </td>
+                            <td colspan="12" class="text-center text-muted">No job listings available.</td>
                         </tr>
                     }
                 </tbody>
@@ -57,3 +79,4 @@
         </div>
     </div>
 </div>
+

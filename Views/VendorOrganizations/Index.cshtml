@@ -1,71 +1,73 @@
 ﻿@model JobPortal.Models.ViewModels.VendororganizationVM
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vendor Organizations";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     int i = 1;
 }
 
-<h1>Index</h1>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Vendor Organizations</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                <li class="breadcrumb-item active">Vendor Table</li>
+            </ol>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                SN
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorContact)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VendorImage)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.VendororganizationList)
-        {
-        <tr>
-            <td>
-                @i
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorContact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorEmail)
-            </td>
-                <td>
-                    @if (item.VendorImage != null)
-                    {
-                        <img src="@item.VendorImage" alt="Vendor Image" style="width: 50px; height: 50px;" />
-                    }
+            <div class="card mb-4">
+                <div class="card-body">
+                    This table lists all vendor organizations registered in the system. You can edit or delete entries directly.
+                    <br />
+            <a asp-action="Create" class="btn btn-secondary mt-3">+ Create New Vendor</a>
+                </div>
+            </div>
 
-                </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.VendorId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.VendorId })
-            </td>
-        </tr>
-            i++;
-        }
-    </tbody>
-</table>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Vendor Organization List
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>@Html.DisplayNameFor(model => model.VendororganizationList.FirstOrDefault().VendorName)</th>
+                                <th>@Html.DisplayNameFor(model => model.VendororganizationList.FirstOrDefault().VendorAddress)</th>
+                                <th>@Html.DisplayNameFor(model => model.VendororganizationList.FirstOrDefault().VendorContact)</th>
+                                <th>@Html.DisplayNameFor(model => model.VendororganizationList.FirstOrDefault().VendorEmail)</th>
+                                <th>@Html.DisplayNameFor(model => model.VendororganizationList.FirstOrDefault().VendorImage)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.VendororganizationList)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@Html.DisplayFor(modelItem => item.VendorName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.VendorAddress)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.VendorContact)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.VendorEmail)</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.VendorImage))
+                                        {
+                                            <img src="@item.VendorImage" alt="Vendor Image" style="width: 50px; height: 50px;" class="rounded-circle" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.VendorId" class="btn btn-sm btn-warning me-1">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.VendorId" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+

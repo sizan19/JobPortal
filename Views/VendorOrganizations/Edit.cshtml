@@ -5,53 +5,63 @@
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>VendororganizationVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input asp-for="VendorId" class="form-control" hidden="hidden" />
-            <div class="form-group">
-                <label asp-for="VendorName" class="control-label"></label>
-                <input asp-for="VendorName" class="form-control" />
-                <span asp-validation-for="VendorName" class="text-danger"></span>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-secondary text-white text-center">
+                    <h5 class="mb-0">Edit Vendor Organization</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+                        <input asp-for="VendorId" type="hidden" />
+
+                        <div class="mb-3">
+                            <label asp-for="VendorName" class="form-label small fw-semibold"></label>
+                            <input asp-for="VendorName" class="form-control form-control-sm" />
+                            <span asp-validation-for="VendorName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VendorAddress" class="form-label small fw-semibold"></label>
+                            <input asp-for="VendorAddress" class="form-control form-control-sm" />
+                            <span asp-validation-for="VendorAddress" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VendorContact" class="form-label small fw-semibold"></label>
+                            <input asp-for="VendorContact" class="form-control form-control-sm" />
+                            <span asp-validation-for="VendorContact" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VendorEmail" class="form-label small fw-semibold"></label>
+                            <input asp-for="VendorEmail" class="form-control form-control-sm" />
+                            <span asp-validation-for="VendorEmail" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VendorImage" class="form-label small fw-semibold"></label><br />
+                            @if (!string.IsNullOrEmpty(Model.VendorImage))
+                            {
+                                <img src="@Model.VendorImage" alt="Vendor Image" class="img-thumbnail mb-2" style="width: 80px; height: 80px;" />
+                            }
+                            <input type="file" name="file" class="form-control form-control-sm" />
+                            <span asp-validation-for="VendorImage" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-sm px-3">Back to List</a>
+                            <button type="submit" class="btn btn-primary btn-sm px-4">Save</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="VendorAddress" class="control-label"></label>
-                <input asp-for="VendorAddress" class="form-control" />
-                <span asp-validation-for="VendorAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VendorContact" class="control-label"></label>
-                <input asp-for="VendorContact" class="form-control" />
-                <span asp-validation-for="VendorContact" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VendorEmail" class="control-label"></label>
-                <input asp-for="VendorEmail" class="form-control" />
-                <span asp-validation-for="VendorEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VendorImage" class="control-label"></label>                
-                @if (Model.VendorImage != null)
-                {
-                    <img src="@Model.VendorImage" alt="Vendor Image" style="width: 50px; height: 50px;" />
-                }
-                <input type="file" name="file" />
-                <span asp-validation-for="VendorImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
