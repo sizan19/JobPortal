@@ -55,46 +55,44 @@ namespace JobPortal.Controllers
 
             if (file != null)
             {
-                var guidId = Guid.NewGuid().ToString();
+                var GuidId = Guid.NewGuid().ToString();
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                string fileName = guidId + file.FileName;
+                string fileName = GuidId + file.FileName;
                 string fileNameWithPath = Path.Combine(path, fileName);
                 using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
-                model.VendorImage = "/Files/" + fileName;
+                model.VendorImage = "/Files/" + GuidId + file.FileName;
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             using (var transaction = _db.Database.BeginTransaction())
             {
                 try
                 {
-                    var entityVendorOrg = new VendorOrganizations
+                    VendorOrganizations org = new VendorOrganizations
                     {
                         VendorName = model.VendorName,
                         VendorAddress = model.VendorAddress,
-                        VendorContact = model.VendorContact,
                         VendorEmail = model.VendorEmail,
+                        VendorContact = model.VendorContact,
                         VendorImage = model.VendorImage,
                         CreatedBy = userId,
                         CreatedDate = DateTime.Now
                     };
-
-                    _db.Entry(entityVendorOrg).State = EntityState.Added;
+                    _db.Entry(org).State = EntityState.Added;
                     _db.SaveChanges();
 
                     IdentityUser user = new IdentityUser
                     {
                         UserName = model.VendorEmail,
                         Email = model.VendorEmail,
-                        EmailConfirmed = true
+                        //OrgId = org.VendorOrgId,
+                        EmailConfirmed = true,
                     };
-
                     var result = _userManager.CreateAsync(user, $"Job@12{model.VendorEmail}").Result;
                     if (result.Succeeded)
                     {
@@ -114,9 +112,9 @@ namespace JobPortal.Controllers
                     ModelState.AddModelError(string.Empty, "An error occurred while creating the organization.");
                 }
             }
-
             return View(model);
         }
+
 
 
         public IActionResult Edit(int id)

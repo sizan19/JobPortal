@@ -65,7 +65,7 @@ namespace JobPortal.Utilities
             var context = scope.ServiceProvider.GetRequiredService<JobPortalContext>();
 
             return await context.Categories
-                .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName })
+                .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName})
                 .ToListAsync();
         }
 
