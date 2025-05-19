@@ -29,6 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.VendorEmail)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorImage)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,6 +53,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VendorEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorImage)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.VendorId }) |

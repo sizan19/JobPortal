@@ -36,6 +36,15 @@
                 <span asp-validation-for="VendorEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="VendorImage" class="control-label"></label>                
+                @if (Model.VendorImage != null)
+                {
+                    <img src="@Model.VendorImage" alt="Vendor Image" style="width: 50px; height: 50px;" />
+                }
+                <input type="file" name="file" />
+                <span asp-validation-for="VendorImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
