@@ -26,6 +26,22 @@
                             <!-- ENHANCEMENT 3: Company Name Auto-filled for Vendors -->
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    @if (!ViewData.ModelState.IsValid)
+                                    {
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach (var state in ViewData.ModelState)
+                                                {
+                                                    foreach (var error in state.Value.Errors)
+                                                    {
+                                                        <li>
+                                                            <b>@state.Key:</b> @error.ErrorMessage
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
                                     <label asp-for="VendorId" class="form-label">Company Name</label>
                                     @if (User.IsInRole("Vendor"))
                                     {

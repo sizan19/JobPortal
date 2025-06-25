@@ -21,7 +21,7 @@
         public decimal? MinSalary { get; set; }
         public decimal? MaxSalary { get; set; }
 
-        public string VendorImage { get; set; }
+        public string? VendorImage { get; set; }
 
 
         public int? Experience { get; set; }
