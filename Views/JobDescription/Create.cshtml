@@ -1,104 +1,190 @@
 ﻿@model JobPortal.Models.ViewModels.JobdescriptionVM
 
 @{
-    ViewData["Title"] = "Create Job";
+    ViewData["Title"] = "Create New Job";
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
-
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Create Job Description</h1>
+    <h1 class="mt-4">Create New Job Posting</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
-        <li class="breadcrumb-item"><a asp-action="Index">Job Descriptions</a></li>
-        <li class="breadcrumb-item active">Create</li>
+        <li class="breadcrumb-item"><a asp-controller="JobDescription" asp-action="Index">Job Listings</a></li>
+        <li class="breadcrumb-item active">Create New Job</li>
     </ol>
 
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">Job Information Form</h5>
-        </div>
-        <div class="card-body">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="CompanyName" class="form-label"></label>
-                        <input asp-for="CompanyName" class="form-control form-control-sm" />
-                        <span asp-validation-for="CompanyName" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Location" class="form-label"></label>
-                        <input asp-for="Location" class="form-control form-control-sm" />
-                        <span asp-validation-for="Location" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="JobType" class="form-label"></label>
-                        <input asp-for="JobType" class="form-control form-control-sm" />
-                        <span asp-validation-for="JobType" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="JobPositions" class="form-label"></label>
-                        <input asp-for="JobPositions" class="form-control form-control-sm" />
-                        <span asp-validation-for="JobPositions" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="CategoryName" class="form-label"></label>
-                        <select asp-for="CategoryName" class="form-select form-select-sm" asp-items="ViewBag.Categories">
-                            <option value="">-- Select Category --</option>
-                        </select>
-                        <span asp-validation-for="CategoryName" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label asp-for="MinSalary" class="form-label"></label>
-                        <input asp-for="MinSalary" class="form-control form-control-sm" />
-                        <span asp-validation-for="MinSalary" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label asp-for="MaxSalary" class="form-label"></label>
-                        <input asp-for="MaxSalary" class="form-control form-control-sm" />
-                        <span asp-validation-for="MaxSalary" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Experience" class="form-label"></label>
-                        <input asp-for="Experience" class="form-control form-control-sm" />
-                        <span asp-validation-for="Experience" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="DeadlineDate" class="form-label"></label>
-                        <input asp-for="DeadlineDate" type="date" class="form-control form-control-sm" />
-                        <span asp-validation-for="DeadlineDate" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label asp-for="Description" class="form-label"></label>
-                        <textarea asp-for="Description" class="form-control form-control-sm" rows="3"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-plus me-1"></i>
+                    Job Details
                 </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row">
+                            <!-- ENHANCEMENT 3: Company Name Auto-filled for Vendors -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="VendorId" class="form-label">Company Name</label>
+                                    @if (User.IsInRole("Vendor"))
+                                    {
+                                        <select asp-for="VendorId" class="form-control" readonly>
+                                            @foreach (var vendor in ViewBag.VendorOrganizations as IEnumerable<SelectListItem>)
+                                            {
+                                                if (vendor.Selected || vendor.Value == Model.VendorId.ToString())
+                                                {
+                                                    <option value="@vendor.Value" selected>@vendor.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                        <small class="form-text text-muted">This field is automatically filled with your company name.</small>
+                                    }
+                                    else
+                                    {
+                                        <select asp-for="VendorId" class="form-control" asp-items="ViewBag.VendorOrganizations as IEnumerable<SelectListItem>">
+                                            <option value="">Select Company</option>
+                                        </select>
+                                    }
+                                    <span asp-validation-for="VendorId" class="text-danger"></span>
+                                </div>
+                            </div>
 
-                <div class="d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Back to List</a>
-                    <button type="submit" class="btn btn-primary btn-sm">Create</button>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="CategoryId" class="form-label">Job Category</label>
+                                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories as IEnumerable<SelectListItem>">
+                                        <option value="">Select Category</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="JobPositions" class="form-label">Job Position</label>
+                                    <input asp-for="JobPositions" class="form-control" placeholder="e.g., Software Engineer" />
+                                    <span asp-validation-for="JobPositions" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="JobVacancy" class="form-label">Number of Vacancies</label>
+                                    <input asp-for="JobVacancy" class="form-control" type="number" min="1" placeholder="1" />
+                                    <span asp-validation-for="JobVacancy" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="JobType" class="form-label">Job Type</label>
+                                    <select asp-for="JobType" class="form-control">
+                                        <option value="">Select Job Type</option>
+                                        <option value="Full Time">Full Time</option>
+                                        <option value="Part Time">Part Time</option>
+                                        <option value="Contract">Contract</option>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Freelance">Freelance</option>
+                                    </select>
+                                    <span asp-validation-for="JobType" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Location" class="form-label">Job Location</label>
+                                    <input asp-for="Location" class="form-control" placeholder="e.g., Kathmandu, Nepal" />
+                                    <span asp-validation-for="Location" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MinSalary" class="form-label">Minimum Salary (NPR)</label>
+                                    <input asp-for="MinSalary" class="form-control" type="number" min="0" placeholder="25000" />
+                                    <span asp-validation-for="MinSalary" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaxSalary" class="form-label">Maximum Salary (NPR)</label>
+                                    <input asp-for="MaxSalary" class="form-control" type="number" min="0" placeholder="50000" />
+                                    <span asp-validation-for="MaxSalary" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Experience" class="form-label">Required Experience</label>
+                                    <input asp-for="Experience" class="form-control" placeholder="e.g., 2-3 years" />
+                                    <span asp-validation-for="Experience" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DeadlineDate" class="form-label">Application Deadline</label>
+                                    <input asp-for="DeadlineDate" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                    <span asp-validation-for="DeadlineDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Job Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Provide detailed job description, requirements, responsibilities, and benefits..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                Create Job Posting
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function() {
+            // Auto-select vendor for vendor users
+        @if (User.IsInRole("Vendor") && Model.VendorId > 0)
+        {
+            <text>
+                    $('#VendorId').val('@Model.VendorId');
+                    $('#VendorId').prop('disabled', true);
+            </text>
+        }
+
+            // Set minimum date for deadline
+            var today = new Date();
+            var tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var minDate = tomorrow.toISOString().split('T')[0];
+            $('#DeadlineDate').attr('min', minDate);
+        });
+    </script>
 }
