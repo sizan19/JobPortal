@@ -2,66 +2,186 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JobPortal — Register</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Register at Elevate Workforce Solutions to start your career journey with Nepal's trusted job portal." />
+    <meta name="keywords" content="job portal, register, sign up, Nepal jobs, Elevate Workforce Solutions" />
+    <meta name="author" content="Code Art Web Technologies" />
+    <link rel="shortcut icon" href="ftco-32x32.png" />
 
-<h1>@ViewData["Title"]</h1>
+    <link rel="stylesheet" href="~/HomeContent/css/custom-bs.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/HomeContent/fonts/icomoon/style.css" />
+    <link rel="stylesheet" href="~/HomeContent/fonts/line-icons/style.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/animate.min.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/quill.snow.css" />
+    <link rel="stylesheet" href="~/HomeContent/css/style.css" />
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
+    <style>
+        .register-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('/HomeContent/images/hero_1.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+            .register-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(101, 179, 56, 0.1);
+                backdrop-filter: blur(6px);
             }
+
+        .register-form {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+            .register-form h2 {
+                color: #333;
+                text-align: center;
+                margin-bottom: 2.5rem;
+                font-weight: 700;
+                font-size: 2rem;
+            }
+
+        .form-control {
+            border-radius: 25px;
+            padding: 14px 20px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+            .form-control:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+            }
+
+        .btn-register {
+            border-radius: 25px;
+            padding: 14px;
+            background: #007bff;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+            .btn-register:hover {
+                background: #0056b3;
+                transform: translateY(-2px);
+            }
+
+        .form-group label {
+            color: #555;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+            .login-link a {
+                color: #007bff;
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+                .login-link a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+
+    <div class="site-wrap">
+        <header class="site-navbar mt-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="site-logo col-6"><a asp-page="/Index">JobPortal</a></div>
+                </div>
+            </div>
+        </header>
+
+        <section class="register-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="register-form">
+                            <h2>Create a New Account</h2>
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Email">Email Address</label>
+                                    <input asp-for="Input.Email" class="form-control" placeholder="Enter your email" autocomplete="username" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Password">Password</label>
+                                    <input asp-for="Input.Password" class="form-control" placeholder="Enter your password" autocomplete="new-password" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Re-enter your password" autocomplete="new-password" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button id="registerSubmit" type="submit" class="btn btn-register btn-block text-white">Register</button>
+                                </div>
+
+                                <div class="login-link">
+                                    <p>Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log In</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
-</div>
 
-@section Scripts {
+    <script src="~/HomeContent/js/jquery.min.js"></script>
+    <script src="~/HomeContent/js/bootstrap.bundle.min.js"></script>
+    <script src="~/HomeContent/js/isotope.pkgd.min.js"></script>
+    <script src="~/HomeContent/js/stickyfill.min.js"></script>
+    <script src="~/HomeContent/js/jquery.fancybox.min.js"></script>
+    <script src="~/HomeContent/js/jquery.easing.1.3.js"></script>
+    <script src="~/HomeContent/js/jquery.waypoints.min.js"></script>
+    <script src="~/HomeContent/js/jquery.animateNumber.min.js"></script>
+    <script src="~/HomeContent/js/owl.carousel.min.js"></script>
+    <script src="~/HomeContent/js/quill.min.js"></script>
+    <script src="~/HomeContent/js/bootstrap-select.min.js"></script>
+    <script src="~/HomeContent/js/custom.js"></script>
     <partial name="_ValidationScriptsPartial" />
-}
+</body>
+</html>
