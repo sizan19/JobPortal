@@ -1,6 +1,7 @@
 ﻿using JobPortal.Data;
 using JobPortal.Models.EntityModels;
 using JobPortal.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace JobPortal.Controllers
 {
+    [Authorize]
     public class VendorOrganizationsController : Controller
     {
         private readonly JobPortalContext _db;

@@ -7,9 +7,11 @@ using JobPortal.Models.ViewModels;
 using System.Collections.Generic;
 using JobPortal.Models.EntityModels;
 using JobPortal.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JobPortal.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly JobPortalContext _db;
