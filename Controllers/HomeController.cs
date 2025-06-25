@@ -18,21 +18,34 @@ namespace JobPortal.Controllers
             _db = db;
         }
 
+        // Controllers/HomeController.cs
         public IActionResult Index()
         {
-            //OrganizationVM model = new OrganizationVM();
-            //model.OrganizationList = (from i in _db.Organization    //SElECT * FROM Organization
-            //                          where i.DeltetedDate == null
-            //                          select new OrganizationVM
-            //                          {
-            //                              OrganizationId = i.OrganizationId,   //converting from Entitymdoel to viewmodel
-            //                              OrgName = i.OrgName,
-            //                              OrgAddress = i.OrgAddress,
-            //                              OrgContact = i.OrgContact,
-            //                              OrgEmail = i.OrgEmail,
-            //                              OrgImage = i.OrgImage,
-            //                          }).ToList();
-            return View();
+            var jobs = (from i in _db.jobdescriptions
+                        join j in _db.Categories on i.CategoryId equals j.CategoryId
+                        join k in _db.VendorOrganizations on i.VendorId equals k.VendorId
+                        where i.DeltetedDate == null
+                        orderby i.DeadlineDate descending
+                        select new JobdescriptionVM
+                        {
+                            JobId = i.JobId,
+                            VendorId = i.VendorId,
+                            CategoryId = i.CategoryId,
+                            JobPositions = i.JobPositions,
+                            JobVacancy = i.JobVacancy,
+                            JobType = i.JobType,
+                            Location = i.Location,
+                            MinSalary = i.MinSalary,
+                            MaxSalary = i.MaxSalary,
+                            Experience = i.Experience,
+                            DeadlineDate = i.DeadlineDate,
+                            Description = i.Description,
+                            VendorName = k.VendorName,
+                            CategoryName = j.CategoryName,
+                            VendorImage = k.VendorImage   // <-- Make sure this matches your DB property!
+                        }).Take(10).ToList(); // Show latest 10 jobs
+
+            return View(jobs);
         }
 
         public IActionResult Privacy()

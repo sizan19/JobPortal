@@ -45,13 +45,11 @@ namespace JobPortal.Controllers
                                 Description = i.Description,
                                 VendorName = k.VendorName,
                                 CategoryName = j.CategoryName
-                                
                             };
 
             // Role-based filtering
             if (User.IsInRole("Vendor"))
             {
-                // Vendors can only see their own job listings
                 int vendorId = _db.VendorOrganizations
                     .Where(x => x.VendorEmail == User.FindFirstValue(ClaimTypes.Email))
                     .Select(x => x.VendorId)
@@ -68,7 +66,6 @@ namespace JobPortal.Controllers
                     model.JobdescriptionList = new List<JobdescriptionVM>();
                 }
 
-                // Set ViewBag to indicate this is a vendor view
                 ViewBag.IsVendorView = true;
                 ViewBag.VendorName = _db.VendorOrganizations
                     .Where(x => x.VendorEmail == User.FindFirstValue(ClaimTypes.Email))
@@ -77,17 +74,14 @@ namespace JobPortal.Controllers
             }
             else if (User.IsInRole("Admin") || User.IsInRole("admin"))
             {
-                // Admins can see all job listings
                 model.JobdescriptionList = baseQuery
                     .ToList();
 
-                // Set ViewBag to indicate this is an admin view
                 ViewBag.IsVendorView = false;
                 ViewBag.TotalJobListings = model.JobdescriptionList.Count;
             }
             else
             {
-                // If user has no recognized role, show empty list
                 model.JobdescriptionList = new List<JobdescriptionVM>();
                 ViewBag.IsVendorView = false;
             }
@@ -334,6 +328,38 @@ namespace JobPortal.Controllers
 
             ViewBag.Statistics = stats;
             return View();
+        }
+
+
+        public IActionResult Details(int id)
+        {
+            var job = (from i in _db.jobdescriptions
+                       join j in _db.Categories on i.CategoryId equals j.CategoryId
+                       join k in _db.VendorOrganizations on i.VendorId equals k.VendorId
+                       where i.JobId == id
+                       select new JobdescriptionVM
+                       {
+                           JobId = i.JobId,
+                           VendorId = i.VendorId,
+                           CategoryId = i.CategoryId,
+                           JobPositions = i.JobPositions,
+                           JobVacancy = i.JobVacancy,
+                           JobType = i.JobType,
+                           Location = i.Location,
+                           MinSalary = i.MinSalary,
+                           MaxSalary = i.MaxSalary,
+                           Experience = i.Experience,
+                           DeadlineDate = i.DeadlineDate,
+                           Description = i.Description,
+                           VendorName = k.VendorName,
+                           VendorImage = k.VendorImage,
+                           CategoryName = j.CategoryName
+                       }).FirstOrDefault();
+
+            if (job == null)
+                return NotFound();
+
+            return View(job);
         }
     }
 }
