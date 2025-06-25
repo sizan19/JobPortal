@@ -10,7 +10,7 @@ namespace JobPortal.Controllers
 
 
 {
-    [Authorize]
+    //[Authorize]
     public class OrganizationController : Controller
     {
 
